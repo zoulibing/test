@@ -12,6 +12,8 @@ def showimage(im_name,points):
 def yoloFormatC(file):
     print ('begin convert format')
     f = open(file)
+    width=416
+    height=416
 
     lines = f.readlines()
     pre = '';
@@ -33,9 +35,17 @@ def yoloFormatC(file):
                 tmp=''
                 cv.imshow('im', im)
                 cv.waitKey(1000)
-            tmp=strs[0]+' '+strs[2]+','+strs[3]+','+strs[4]+','+strs[5]+','+strs[1]
-            pre_pic=strs[0]
-            im = cv.imread(path + pre_pic)
+            tmp=path+strs[0]+' '+strs[2]+','+strs[3]+','+strs[4]+','+strs[5]+','+strs[1]
+            pre_pic=path+strs[0]
+            im = cv.imread(pre_pic)
+            print(im.shape)
+            scalar_x=width/im.shape[1]
+            scalar_y=height/im.shape[0]
+            print (scalar_x,scalar_y)
+            res = cv.resize(im, (width,height), interpolation=cv.INTER_CUBIC)
+            cv.rectangle(res, (int(int(strs[2])*scalar_x), int(int(strs[3])*scalar_y)), (int(int(strs[4])*scalar_x), int(int(strs[5])*scalar_y)), (255, 0, 0))
+            cv.imshow('tmp',res)
+
             cv.rectangle(im, (int(strs[2]),int(strs[3])),(int(strs[4]),int(strs[5])), (255, 0, 0))
 
     return results
